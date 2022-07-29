@@ -39,7 +39,10 @@ function reducer(state, action){
 }
 
 // reducer 함수를 주입하여 새로운 store 생성 
-var store = Redux.createStore(reducer);
+var store = Redux.createStore(
+    reducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 function red(){ 
     // store에 저장된 state 값에 따라 UI 변경하기 
