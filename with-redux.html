@@ -32,7 +32,7 @@ function reducer(state, action){
 
     if(action.type === 'CHANGE_COLOR'){
         // reducer 함수가 실행될 때마다 서로 완전히 독립된 복사본들이 리턴됨. 
-        newState = Object.assign({}, state, {color:'red'});
+        newState = Object.assign({}, state, {color: action.color});
     }
 
     return newState; 
@@ -42,9 +42,8 @@ function reducer(state, action){
 var store = Redux.createStore(reducer);
 
 function red(){ 
-    // store에 저장된 state 값 가져오기 
+    // store에 저장된 state 값에 따라 UI 변경하기 
     var state = store.getState();
-
     document.querySelector('#red').innerHTML = `
         <div 
             class="container"
@@ -59,7 +58,50 @@ function red(){
         </div> 
     `;
 }
+
+// store에 render 함수를 구독해두면
+// state가 바뀔 때마다 render 함수가 호출되어 UI에 반영됨. 
+store.subscribe(red);
 red();
+
+function green(){
+    var state = store.getState();
+    document.querySelector('#green').innerHTML = `
+        <div 
+            class="container"
+            id="component_green" 
+            style="background-color:${state.color}">
+
+            <h1>green</h1> 
+
+            <input type="button" value="fire" onclick="
+                store.dispatch({type:'CHANGE_COLOR', color:'green'});
+            ">
+        </div> 
+    `;
+}
+store.subscribe(green);
+green();
+
+function blue(){
+    var state = store.getState();
+    document.querySelector('#blue').innerHTML = `
+        <div 
+            class="container"
+            id="component_blue" 
+            style="background-color:${state.color}">
+
+            <h1>blue</h1> 
+
+            <input type="button" value="fire" onclick="
+                store.dispatch({type:'CHANGE_COLOR', color:'blue'});
+            ">
+        </div> 
+    `;
+}
+store.subscribe(blue);
+blue();
+
     </script>
 </body>
 </html>
